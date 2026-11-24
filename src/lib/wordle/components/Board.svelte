@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Word from './Word.svelte';
-	import wordle, { BOARD_LENGTH } from './wordle.svelte';
+	import wordle, { BOARD_LENGTH } from '../wordle.svelte';
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		// Ignora atalhos do browser (ex: Ctrl+R, Cmd+Shift+I) e teclas de repetição longa

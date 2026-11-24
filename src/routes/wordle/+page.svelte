@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Board from '../../lib/wordle/Board.svelte';
+	import Board from '../../lib/wordle/components/Board.svelte';
 	import wordle from '../../lib/wordle/wordle.svelte';
 	import type { PageProps } from './$types';
 

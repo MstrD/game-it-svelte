@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Letter from './Letter.svelte';
-	import wordle, { WORD_LENGTH } from './wordle.svelte';
+	import wordle, { WORD_LENGTH } from '../wordle.svelte';
 
 	const { index: wordIndex } = $props();
 </script>

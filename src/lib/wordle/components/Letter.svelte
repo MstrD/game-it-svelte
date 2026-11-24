@@ -1,5 +1,5 @@
 <script lang="ts">
-	import wordle from './wordle.svelte';
+	import wordle from '../wordle.svelte';
 
 	const { index, wordIndex } = $props();
 	const letter = $derived.by(() => {

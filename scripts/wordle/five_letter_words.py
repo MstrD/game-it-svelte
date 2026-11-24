@@ -4,16 +4,17 @@ Each entry is {"word": "lábio", "unicode": "labio"}.
 
 Verbs are kept only in the infinitive. Finite forms, the personal infinitive,
 the gerund and the participle are dropped, unless the same spelling is also
-a non-verbal entry (noun, adjective, and so on).
+a non-verbal entry (noun, adjective, and so on). Proper nouns are dropped
+unless the same spelling is also a common entry.
 """
 
 import json
 import unicodedata
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-DIC_PATH = ROOT / "src" / "lib" / "assets" / "pt_PT.dic"
-OUT_PATH = ROOT / "static" / "five_letter_words.json"
+ROOT = Path(__file__).resolve().parents[2]
+DIC_PATH = Path(__file__).resolve().parent / "pt_PT.dic"
+OUT_PATH = ROOT / "src" / "lib" / "wordle" / "dictionary.json"
 
 
 def parse_features(morph: str) -> dict[str, str]:
@@ -39,6 +40,11 @@ def is_conjugated_verb(features: dict[str, str]) -> bool:
     if features.get("CAT") != "v":
         return False
     return features.get("T") != "inf" or "P" in features
+
+
+def is_proper_noun(features: dict[str, str]) -> bool:
+    """True when this reading is a proper noun."""
+    return features.get("CAT") == "np"
 
 
 def is_five_letter_word(word: str) -> bool:
@@ -67,8 +73,10 @@ def collect_words(dic_path: Path) -> list[dict[str, str]]:
         word = left.split("/", 1)[0].strip().lower()
         if not is_five_letter_word(word):
             continue
-        if not is_conjugated_verb(parse_features(morph)):
-            accepted.add(word)
+        features = parse_features(morph)
+        if is_conjugated_verb(features) or is_proper_noun(features):
+            continue
+        accepted.add(word)
 
     entries = [{"word": word, "unicode": to_unicode(word)} for word in accepted]
     return sorted(entries, key=lambda entry: (entry["unicode"], entry["word"]))
