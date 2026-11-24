@@ -30,8 +30,8 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 <div class="board">
-	{#each Array.from({ length: BOARD_LENGTH }) as _, index}
-		<Word {index} />
+	{#each Array.from({ length: BOARD_LENGTH }).map((_, index) => index) as index (index)}
+		<Word index={index} />
 	{/each}
 </div>
 {#if wordle.status === 'playing'}

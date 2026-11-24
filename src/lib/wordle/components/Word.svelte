@@ -1,13 +1,13 @@
 <script lang="ts">
 	import Letter from './Letter.svelte';
-	import wordle, { WORD_LENGTH } from '../wordle.svelte';
+	import { WORD_LENGTH } from '../wordle.svelte';
 
-	const { index: wordIndex } = $props();
+	const { index: wordIndex }: { index: number } = $props();
 </script>
 
 <div class="word">
-	{#each Array.from({ length: WORD_LENGTH }) as _, index}
-		<Letter {wordIndex} {index} />
+	{#each Array.from({ length: WORD_LENGTH }).map((_, index) => index) as index (index)}
+		<Letter wordIndex={wordIndex} index={index} />
 	{/each}
 </div>
 

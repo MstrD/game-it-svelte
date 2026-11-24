@@ -1,7 +1,7 @@
 <script lang="ts">
 	import wordle from '../wordle.svelte';
 
-	const { index, wordIndex } = $props();
+	const { index, wordIndex }: { index: number, wordIndex: number } = $props();
 	const letter = $derived.by(() => {
 		if (wordIndex > wordle.attempt) return '';
 		return wordle.guesses[wordIndex][index] ?? wordle.guess[index];

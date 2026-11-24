@@ -1,20 +1,23 @@
 import { existsWord, getRandomWord, getWord, setDictionary } from './dictionary';
-import type { Evaluation, GameStatus, WordEntry } from './types';
+import type { Evaluation, WordEntry, WordleState } from './types';
 import { isGuessed, validateGuess } from './validations';
 
 export const BOARD_LENGTH = 6;
 export const WORD_LENGTH = 5;
 const EMPTY_WORD = '';
 
-const wordle = $state({
+const emptyGuesses = (): string[] => Array.from({ length: BOARD_LENGTH }, () => EMPTY_WORD);
+
+const emptyEvaluations = (): Evaluation[][] =>
+	Array.from({ length: BOARD_LENGTH }, () => Array.from({ length: WORD_LENGTH }, () => 'empty'));
+
+const wordle = $state<WordleState>({
 	attempt: 0,
-	guesses: Array.from({ length: BOARD_LENGTH }, () => EMPTY_WORD),
-	target: null as WordEntry | null,
+	guesses: emptyGuesses(),
+	target: null,
 	guess: EMPTY_WORD,
-	status: 'playing' as GameStatus,
-	evaluations: Array.from({ length: BOARD_LENGTH }, () =>
-		Array.from({ length: WORD_LENGTH }, () => 'empty')
-	) as Evaluation[][],
+	status: 'playing',
+	evaluations: emptyEvaluations(),
 	get canPlay() {
 		return this.status === 'playing' && this.attempt < BOARD_LENGTH;
 	},
@@ -55,13 +58,11 @@ const wordle = $state({
 	reset: () => {
 		if (!wordle.canReset) return;
 		wordle.attempt = 0;
-		wordle.guesses = Array.from({ length: BOARD_LENGTH }, () => EMPTY_WORD);
+		wordle.guesses = emptyGuesses();
 		wordle.target = getRandomWord();
 		wordle.guess = EMPTY_WORD;
 		wordle.status = 'playing';
-		wordle.evaluations = Array.from({ length: BOARD_LENGTH }, () =>
-			Array.from({ length: WORD_LENGTH }, () => 'empty')
-		) as Evaluation[][];
+		wordle.evaluations = emptyEvaluations();
 	}
 });
 
